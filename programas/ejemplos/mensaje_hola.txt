@@ -1,0 +1,24 @@
+# Imprimir "Hola" en la pantalla
+
+# Letra H
+LOADI 'H'
+OUT
+
+# Letra o
+LOADI 'o'
+OUT
+
+# Letra l
+LOADI 'l'
+OUT
+
+# Letra a
+LOADI 'a'
+OUT
+
+# Salto de línea (opcional)
+LOADI 10
+OUT
+
+# Fin del programa
+HALT

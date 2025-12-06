@@ -1,0 +1,69 @@
+# Programa de ejemplo: Suma de dos números pedidos por teclado
+
+# Mensaje de bienvenida
+LOADI 'B'
+OUT
+LOADI 'i'
+OUT
+LOADI 'e'
+OUT
+LOADI 'n'
+OUT
+LOADI 'v'
+OUT
+LOADI 'e'
+OUT
+LOADI 'n'
+OUT
+LOADI 'i'
+OUT
+LOADI 'd'
+OUT
+LOADI 'o'
+OUT
+LOADI 10 # Salto de línea (ASCII)
+OUT
+
+# Pedir primer número
+LOADI 'N'
+OUT
+LOADI '1'
+OUT
+LOADI ':'
+OUT
+IN
+STORE 250  # Guardar primer número en la dirección 250
+
+LOADI 10 # Salto de línea
+OUT
+
+# Pedir segundo número
+LOADI 'N'
+OUT
+LOADI '2'
+OUT
+LOADI ':'
+OUT
+IN
+ADD 250   # Sumar el AC (N2) con el valor en RAM[250] (N1)
+
+LOADI 10 # Salto de línea
+OUT
+
+# Mostrar "Resultado:"
+LOADI 'R'
+OUT
+LOADI 'e'
+OUT
+LOADI 's'
+OUT
+LOADI ':'
+OUT
+
+# Mostrar el resultado (que está en el AC)
+# La suma de los ASCII de los números, no el valor numérico.
+# Para una suma real, necesitaríamos convertir ASCII a número.
+OUT
+
+# Fin del programa
+HALT

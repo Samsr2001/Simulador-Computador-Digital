@@ -1,0 +1,21 @@
+# Suma Básica: 5 + 10
+
+# Cargar el primer valor en el Acumulador
+LOADI 5
+
+# Guardarlo en una dirección de memoria (ej. 200)
+STORE 200
+
+# Cargar el segundo valor en el Acumulador
+LOADI 10
+
+# Sumarle el valor que está en la memoria
+ADD 200
+
+# El resultado (15) queda en el Acumulador (AC)
+
+# Opcional: mostrar el resultado
+# OUT # Esto imprimiría el caracter ASCII 15, que no es imprimible.
+
+# Detener el programa
+HALT
