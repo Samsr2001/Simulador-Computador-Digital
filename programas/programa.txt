@@ -1,69 +1,62 @@
-# Programa de ejemplo: Suma de dos números pedidos por teclado
+# Calculadora de Suma Simple Interactiva
+# Pide dos números de un solo dígito (0-9), los suma y muestra el resultado.
 
-# Mensaje de bienvenida
-LOADI 'B'
-OUT
-LOADI 'i'
-OUT
-LOADI 'e'
-OUT
-LOADI 'n'
-OUT
-LOADI 'v'
-OUT
-LOADI 'e'
-OUT
-LOADI 'n'
-OUT
-LOADI 'i'
-OUT
-LOADI 'd'
-OUT
-LOADI 'o'
-OUT
-LOADI 10 # Salto de línea (ASCII)
-OUT
+# --- Constantes ---
+# Guarda el valor ASCII de '0' (48) en la memoria para la conversión.
+LOADI 48
+STORE 251  # Mem[251] = 48 (ASCII de '0')
 
-# Pedir primer número
+# --- Lógica del Programa ---
+# 1. Pedir el primer número
 LOADI 'N'
 OUT
 LOADI '1'
 OUT
 LOADI ':'
 OUT
-IN
-STORE 250  # Guardar primer número en la dirección 250
-
-LOADI 10 # Salto de línea
+LOADI ' '
 OUT
 
-# Pedir segundo número
+# 2. Leer el primer número y convertirlo
+IN         # AC = ASCII del dígito
+SUB 251    # AC = valor numérico
+STORE 250  # Guarda en Mem[250]
+
+# 3. Pedir el segundo número (con un salto de línea)
+LOADI 10   # ASCII para nueva línea
+OUT
 LOADI 'N'
 OUT
 LOADI '2'
 OUT
 LOADI ':'
 OUT
-IN
-ADD 250   # Sumar el AC (N2) con el valor en RAM[250] (N1)
-
-LOADI 10 # Salto de línea
+LOADI ' '
 OUT
 
-# Mostrar "Resultado:"
+# 4. Leer el segundo número y convertirlo
+IN         # AC = ASCII del dígito
+SUB 251    # AC = valor numérico
+
+# 5. Sumar
+ADD 250    # AC = suma de los dos números
+
+# 6. Mostrar mensaje de resultado
+LOADI 10   # ASCII para nueva línea
+OUT
 LOADI 'R'
-OUT
-LOADI 'e'
-OUT
-LOADI 's'
 OUT
 LOADI ':'
 OUT
-
-# Mostrar el resultado (que está en el AC)
-# La suma de los ASCII de los números, no el valor numérico.
-# Para una suma real, necesitaríamos convertir ASCII a número.
+LOADI ' '
 OUT
 
-# Fin del programa
+# 7. Convertir el resultado a ASCII para imprimir
+#    (Funciona para resultados de un solo dígito 0-9)
+ADD 251    # AC = suma + 48 (convierte el número a su char ASCII)
+
+# 8. Imprimir el resultado
+OUT
+
+# 9. Fin del programa
 HALT
