@@ -1,31 +1,27 @@
-import pygame
+import time
 
 class Keyboard:
-    """Gestiona la entrada de teclado."""
+    """Gestiona la entrada de teclado a través de un buffer en IOManager."""
 
-    def __init__(self):
-        """Inicializa el buffer de teclado."""
-        # Este buffer podría usarse para almacenar múltiples pulsaciones si fuera necesario.
-        # Por ahora, la lógica de `read_key` es bloqueante y no necesita un buffer complejo.
-        pass
+    def __init__(self, io_manager):
+        """
+        Inicializa el teclado.
+        Args:
+            io_manager (IOManager): El gestor de E/S que contiene el buffer.
+        """
+        self.io_manager = io_manager
 
     def read_key(self) -> int:
         """
-        Espera y captura una tecla, devolviendo su valor ASCII.
-        Este es un método de bloqueo. Se debe llamar desde la CPU,
-        y el bucle de Pygame debe seguir corriendo para capturar eventos.
+        Espera y obtiene una tecla del buffer del IOManager.
+        Este método es bloqueante para el ciclo de la CPU, pero no para la GUI.
         Returns:
-            int: El código ASCII de la tecla presionada.
+            int: El código ASCII de la tecla.
         """
         while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    exit()
-                if event.type == pygame.KEYDOWN:
-                    # `event.unicode` devuelve el caracter como string.
-                    # `ord()` lo convierte a su valor ASCII/Unicode.
-                    if event.unicode and event.unicode.isprintable():
-                        return ord(event.unicode)
-            # Es importante ceder tiempo al sistema operativo
-            pygame.time.wait(10)
+            key_code = self.io_manager.pop_key()
+            if key_code is not None:
+                return key_code
+            # Pequeña pausa para no saturar la CPU y permitir que la GUI se actualice.
+            time.sleep(0.01)
+

@@ -29,28 +29,43 @@ class CPU:
         # Estado
         self.halted = False
         self.running = False
+        self.waiting_for_input = False
 
     def step(self):
-        """Ejecuta un único ciclo de instrucción (fetch-decode-execute)."""
+        """Ejecuta un único ciclo de instrucción o maneja el estado de espera."""
         if self.halted:
             return
 
+        # Si estamos esperando una entrada de teclado
+        if self.waiting_for_input:
+            key = self.io_manager.pop_key()
+            if key is not None:
+                self.ac = key
+                self.io_manager.write_char(key)  # <-- ECHO a la pantalla
+                self.waiting_for_input = False
+                self.pc += 1  # La instrucción IN ha terminado, avanzamos al siguiente
+            return # Si no hay tecla, no hacemos nada más en este ciclo
+
+        # --- Ciclo normal Fetch-Decode-Execute ---
+        
         # 1. Fetch
-        pc_before_fetch = self.pc
         self.ir = self.control_unit.fetch(self.pc)
-        self.pc += 1
 
         # 2. Decode
         instruction = self.control_unit.decode(self.ir)
+        pc_before_execute = self.pc
 
         # 3. Execute
-        # Si la instrucción es un salto, la CU modificará el PC directamente.
-        # Si no, el PC ya se ha incrementado para la siguiente instrucción.
+        # La ejecución de 'IN' ahora activará 'waiting_for_input'
         self.control_unit.execute(self)
         
-        # Si el PC no fue modificado por un salto, y la instrucción no fue un salto condicional no cumplido
-        # if self.pc == pc_before_fetch + 1:
-        #     pass # El PC ya está bien
+        # 4. Avanzar PC (si no es un salto o una instrucción de espera)
+        # Si la ejecución resultó en una espera, no avanzamos el PC.
+        # El PC se avanzará cuando se reciba la tecla.
+        if not self.waiting_for_input:
+            # Si el PC no fue modificado por un JUMP, lo incrementamos.
+            if self.pc == pc_before_execute:
+                self.pc += 1
 
     def run_cycle(self):
         """Wrapper para ejecutar un ciclo si la CPU está en modo 'running'."""
@@ -73,6 +88,6 @@ class CPU:
         self.flag_z = 0
         self.halted = False
         self.running = False
+        self.waiting_for_input = False
         self.memory.reset()
         self.io_manager.reset()
-

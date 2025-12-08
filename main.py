@@ -13,7 +13,7 @@ def main():
     
     # 2. Cargar el programa
     # El archivo 'programa.txt' debe estar en la carpeta 'programas'
-    program_loader = ProgramLoader("programas/ejemplos/mensaje_hola.txt", memory)
+    program_loader = ProgramLoader("programas/programa.txt", memory)
     program_loader.load_into_memory()
 
     # 3. Crear la CPU

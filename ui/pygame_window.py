@@ -25,6 +25,7 @@ class PygameWindow:
         self.screen = pygame.display.set_mode(self.screen_size)
         self.clock = pygame.time.Clock()
         self.is_running = True
+        self.io_manager = io_manager
 
         # Crear paneles
         self.cpu_panel = CPUPanel(20, 20, 250, 200, cpu)
@@ -47,6 +48,10 @@ class PygameWindow:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.is_running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.unicode.isprintable():
+                        self.io_manager.push_key(ord(event.unicode))
+                
                 self.control_panel.handle_event(event)
 
             # Lógica del simulador

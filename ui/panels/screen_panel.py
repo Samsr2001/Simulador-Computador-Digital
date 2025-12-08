@@ -16,9 +16,11 @@ class ScreenPanel:
         """
         self.rect = pygame.Rect(x, y, width, height)
         self.io_manager = io_manager
-        self.font = pygame.font.Font(pygame.font.get_default_font(), 20)
-        self.title_font = pygame.font.Font(None, 28)
+        # Usar la fuente por defecto de Pygame (más seguro)
+        self.font = pygame.font.Font(None, 24)
+        self.title_font = pygame.font.Font(None, 32)
         self.title_font.set_bold(True)
+        
     def draw(self, surface):
         """
         Dibuja el panel de la pantalla.
@@ -33,7 +35,8 @@ class ScreenPanel:
 
         # Muestra el buffer de la pantalla
         buffer_text = self.io_manager.screen.get_buffer()
-        lines = buffer_text.split('\\n')
+        # Corregido: usar '\n' para dividir las líneas
+        lines = buffer_text.split('\n')
         
         y_offset = 50
         for line in lines:

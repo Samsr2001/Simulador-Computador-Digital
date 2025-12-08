@@ -20,9 +20,9 @@ class Screen:
         self._buffer += chr(char_code)
 
         # Trunca las líneas más antiguas si se supera el máximo
-        lines = self._buffer.split('\\n')
+        lines = self._buffer.split('\n')
         if len(lines) > self.max_lines:
-            self._buffer = "\\n".join(lines[-self.max_lines:])
+            self._buffer = "\n".join(lines[-self.max_lines:])
 
 
     def get_buffer(self) -> str:

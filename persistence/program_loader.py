@@ -27,7 +27,8 @@ class ProgramLoader:
                     if not line or line.startswith('#'):  # Ignorar líneas vacías o comentarios
                         continue
 
-                    parts = line.split()
+                    # Separar mnemónico del resto de la línea
+                    parts = line.split(maxsplit=1)
                     mnemonic = parts[0].upper()
                     
                     try:
@@ -39,14 +40,30 @@ class ProgramLoader:
 
                     operand = 0
                     if len(parts) > 1:
-                        operand_str = parts[1]
-                        if operand_str.startswith("'") and operand_str.endswith("'"):
-                            # Es un caracter, como 'A'
-                            operand = ord(operand_str.strip("'"))
+                        operand_str = parts[1].strip()
+                        
+                        # Ignorar comentarios al final de la línea
+                        if '#' in operand_str:
+                            operand_str = operand_str.split('#', 1)[0].strip()
+
+                        if not operand_str:
+                            operand = 0
+                        elif operand_str.startswith("'") and operand_str.endswith("'"):
+                            # Es un caracter, como 'A'. Usar slicing es más seguro.
+                            char_literal = operand_str[1:-1]
+                            if char_literal:
+                                # Maneja casos como ' ' (espacio)
+                                operand = ord(char_literal)
+                            else:
+                                # Caso '' (caracter vacío)
+                                operand = 0
                         else:
                             # Es un número (decimal por defecto)
-                            operand = int(operand_str)
-
+                            try:
+                                operand = int(operand_str)
+                            except ValueError:
+                                print(f"Error: Operando inválido '{operand_str}' en línea: {line}")
+                                continue
 
                     # Construir la instrucción de 16 bits
                     # 4 bits para opcode, 12 para operando

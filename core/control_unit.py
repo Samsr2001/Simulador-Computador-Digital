@@ -63,7 +63,7 @@ class ControlUnit:
             if cpu.flag_z == 1:
                 cpu.pc = operand
         elif opcode == Opcode.IN:
-            cpu.ac = cpu.io_manager.read_key()
+            cpu.waiting_for_input = True
         elif opcode == Opcode.OUT:
             cpu.io_manager.write_char(cpu.ac)
         elif opcode == Opcode.LOADI:

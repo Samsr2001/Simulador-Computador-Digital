@@ -1,3 +1,4 @@
+import collections
 from iod.keyboard import Keyboard
 from iod.screen import Screen
 
@@ -6,8 +7,19 @@ class IOManager:
 
     def __init__(self):
         """Inicializa el gestor de E/S con un teclado y una pantalla."""
-        self.keyboard = Keyboard()
+        self.key_buffer = collections.deque()
+        self.keyboard = Keyboard(self)
         self.screen = Screen()
+
+    def push_key(self, key_code: int):
+        """Añade un código de tecla al buffer."""
+        self.key_buffer.append(key_code)
+
+    def pop_key(self) -> int | None:
+        """Saca un código de tecla del buffer. Devuelve None si está vacío."""
+        if self.key_buffer:
+            return self.key_buffer.popleft()
+        return None
 
     def read_key(self) -> int:
         """
@@ -29,4 +41,5 @@ class IOManager:
     def reset(self):
         """Reinicia los dispositivos de E/S."""
         self.screen.reset()
+        self.key_buffer.clear()
         # El teclado no necesita reinicio de estado en este diseño
