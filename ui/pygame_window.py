@@ -27,13 +27,17 @@ class PygameWindow:
 
         # Cargar y establecer el ícono de la ventana
         try:
-            # Coloca tu archivo de logo (idealmente 32x32) en la carpeta 'assets'
-            # con el nombre 'logo.png' para que se cargue automáticamente.
-            icon_surface = pygame.image.load('assets/logo.jpg')
+            # Intenta cargar .png primero (formato más seguro)
+            icon_surface = pygame.image.load('assets/logo.png')
             pygame.display.set_icon(icon_surface)
-        except pygame.error:
-            # Si no se encuentra el archivo, el programa continúa sin ícono.
-            pass
+        except (pygame.error, FileNotFoundError):
+            try:
+                # Como fallback, intenta cargar .jpg (el que proporcionaste)
+                icon_surface = pygame.image.load('assets/logo.jpg')
+                pygame.display.set_icon(icon_surface)
+            except (pygame.error, FileNotFoundError):
+                # Si ninguno funciona, el programa continúa sin ícono.
+                pass
         self.clock = pygame.time.Clock()
         self.is_running = True
         self.io_manager = io_manager

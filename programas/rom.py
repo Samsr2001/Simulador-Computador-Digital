@@ -18,6 +18,7 @@ CALCULATOR_PROGRAM = [
     "LOADI 'D'", "OUT",
     "LOADI 'O'", "OUT",
     "LOADI 'S'", "OUT",
+    "LOADI '!'", "OUT",
     "LOADI 10", "OUT",
     "LOADI 'C'", "OUT",
     "LOADI 'A'", "OUT",

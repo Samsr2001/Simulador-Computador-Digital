@@ -1,7 +1,7 @@
 # Calculadora de Suma Simple Interactiva
 # Pide dos números y muestra el resultado.
 
-# --- Mensaje de Bienvenida ---
+# Mensaje de Bienvenida 
 LOADI 'B'
 OUT
 LOADI 'I'
@@ -26,7 +26,7 @@ LOADI 'S'
 OUT
 LOADI '!'
 OUT
-LOADI 10
+LOADI 9
 OUT
 LOADI 'C'
 OUT
@@ -64,9 +64,9 @@ LOADI 'L'
 OUT
 LOADI 'E'
 OUT
-LOADI 10
+LOADI 9
 OUT
-LOADI 10
+LOADI 9
 OUT
 
 # --- Lógica del Programa ---
@@ -129,7 +129,7 @@ IN
 STORE 250
 
 # 3. Pedir el segundo número
-LOADI 10
+LOADI 9
 OUT
 LOADI 'I'
 OUT
@@ -194,7 +194,7 @@ ADD 250
 STORE 252
 
 # 6. Mostrar mensaje de resultado
-LOADI 10
+LOADI 9
 OUT
 LOADI 'E'
 OUT
