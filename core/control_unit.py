@@ -38,12 +38,15 @@ class ControlUnit:
     def execute(self, cpu):
         """
         Fase de ejecución: realiza la operación indicada por el opcode.
-        Este método modifica el estado de la CPU (registros, flags).
+        Este método modifica el estado de la CPU (registros, flags, pc).
         Args:
             cpu: La instancia de la CPU que se está ejecutando.
         """
         opcode = self.instruction.opcode
         operand = self.instruction.operand
+
+        # Variable para rastrear si el PC ya fue modificado
+        pc_modified = False
 
         if opcode == Opcode.LOAD:
             cpu.ac = self.memory.read(operand)
@@ -59,14 +62,24 @@ class ControlUnit:
             cpu.flag_z = 1 if cpu.ac == 0 else 0
         elif opcode == Opcode.JUMP:
             cpu.pc = operand
+            pc_modified = True
         elif opcode == Opcode.JZ:
             if cpu.flag_z == 1:
                 cpu.pc = operand
+                pc_modified = True
         elif opcode == Opcode.IN:
             cpu.waiting_for_input = True
+            pc_modified = True  # El PC se manejará después de la entrada
         elif opcode == Opcode.OUT:
             cpu.io_manager.write_char(cpu.ac)
+        elif opcode == Opcode.OUTNUM:
+            cpu.io_manager.write_value(cpu.ac)
         elif opcode == Opcode.LOADI:
             cpu.ac = operand
         elif opcode == Opcode.HALT:
             cpu.halted = True
+            pc_modified = True
+
+        # Si el PC no fue modificado por un salto o una espera, avanzamos
+        if not pc_modified:
+            cpu.pc += 1

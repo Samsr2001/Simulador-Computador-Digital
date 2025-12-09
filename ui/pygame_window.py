@@ -9,7 +9,7 @@ from ui.panels.control_panel import ControlPanel
 class PygameWindow:
     """La ventana principal de la aplicación que contiene todos los paneles."""
 
-    def __init__(self, cpu, memory, io_manager, program_loader):
+    def __init__(self, cpu, memory, io_manager, program_loader, calculator_program=None):
         """
         Inicializa la ventana de Pygame.
         Args:
@@ -17,19 +17,30 @@ class PygameWindow:
             memory (Memory): La instancia de la memoria.
             io_manager (IOManager): El gestor de E/S.
             program_loader (ProgramLoader): El cargador de programas.
+            calculator_program (list, optional): El programa de calculadora pre-cargado.
         """
         pygame.init()
         pygame.display.set_caption("Simulador de Computador Digital")
 
         self.screen_size = Pantallas.BIG.value
         self.screen = pygame.display.set_mode(self.screen_size)
+
+        # Cargar y establecer el ícono de la ventana
+        try:
+            # Coloca tu archivo de logo (idealmente 32x32) en la carpeta 'assets'
+            # con el nombre 'logo.png' para que se cargue automáticamente.
+            icon_surface = pygame.image.load('assets/logo.jpg')
+            pygame.display.set_icon(icon_surface)
+        except pygame.error:
+            # Si no se encuentra el archivo, el programa continúa sin ícono.
+            pass
         self.clock = pygame.time.Clock()
         self.is_running = True
         self.io_manager = io_manager
 
         # Crear paneles
         self.cpu_panel = CPUPanel(20, 20, 250, 200, cpu)
-        self.control_panel = ControlPanel(20, 240, 250, 340, cpu, program_loader)
+        self.control_panel = ControlPanel(20, 240, 250, 340, cpu, program_loader, calculator_program)
         
         # Paneles de la derecha
         mem_panel_width = 714
@@ -49,7 +60,11 @@ class PygameWindow:
                 if event.type == pygame.QUIT:
                     self.is_running = False
                 elif event.type == pygame.KEYDOWN:
-                    if event.unicode.isprintable():
+                    if event.key == pygame.K_RETURN:
+                        self.io_manager.push_key(10)  # ASCII para Enter/Intro
+                    elif event.key == pygame.K_BACKSPACE:
+                        self.io_manager.push_key(8)   # ASCII para Retroceso
+                    elif event.unicode.isprintable():
                         self.io_manager.push_key(ord(event.unicode))
                 
                 self.control_panel.handle_event(event)

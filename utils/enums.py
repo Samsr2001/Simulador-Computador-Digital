@@ -10,6 +10,7 @@ class Opcode(Enum):
     IN = 0x7
     OUT = 0x8
     LOADI = 0x9
+    OUTNUM = 0xA
     HALT = 0xF
 
 class Pantallas(Enum):

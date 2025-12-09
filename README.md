@@ -88,6 +88,7 @@ Las instrucciones son de 16 bits: 4 bits para el código de operación (opcode) 
 | `0x7`        | `IN`       | Espera una tecla y carga su valor ASCII en `AC`.     |
 | `0x8`        | `OUT`      | Imprime el valor de `AC` como un caracter ASCII en la pantalla. |
 | `0x9`        | `LOADI`    | Carga un valor inmediato (`val`) en `AC`.            |
+| `0xA`        | `OUTNUM`   | Imprime el valor numérico de `AC` en la pantalla.      |
 | `0xF`        | `HALT`     | Detiene la ejecución del programa.                   |
 
 ---

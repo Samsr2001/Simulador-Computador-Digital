@@ -38,6 +38,14 @@ class IOManager:
         """
         self.screen.write_char(value)
 
+    def write_value(self, value: int):
+        """
+        Escribe un valor numérico en la pantalla.
+        Args:
+            value (int): El número a mostrar.
+        """
+        self.screen.write_value(value)
+
     def reset(self):
         """Reinicia los dispositivos de E/S."""
         self.screen.reset()

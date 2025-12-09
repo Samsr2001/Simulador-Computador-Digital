@@ -1,62 +1,239 @@
 # Calculadora de Suma Simple Interactiva
-# Pide dos números de un solo dígito (0-9), los suma y muestra el resultado.
+# Pide dos números y muestra el resultado.
 
-# --- Constantes ---
-# Guarda el valor ASCII de '0' (48) en la memoria para la conversión.
-LOADI 48
-STORE 251  # Mem[251] = 48 (ASCII de '0')
-
-# --- Lógica del Programa ---
-# 1. Pedir el primer número
-LOADI 'N'
+# --- Mensaje de Bienvenida ---
+LOADI 'B'
 OUT
-LOADI '1'
+LOADI 'I'
 OUT
-LOADI ':'
-OUT
-LOADI ' '
-OUT
-
-# 2. Leer el primer número y convertirlo
-IN         # AC = ASCII del dígito
-SUB 251    # AC = valor numérico
-STORE 250  # Guarda en Mem[250]
-
-# 3. Pedir el segundo número (con un salto de línea)
-LOADI 10   # ASCII para nueva línea
+LOADI 'E'
 OUT
 LOADI 'N'
 OUT
-LOADI '2'
+LOADI 'V'
 OUT
-LOADI ':'
+LOADI 'E'
 OUT
-LOADI ' '
+LOADI 'N'
 OUT
-
-# 4. Leer el segundo número y convertirlo
-IN         # AC = ASCII del dígito
-SUB 251    # AC = valor numérico
-
-# 5. Sumar
-ADD 250    # AC = suma de los dos números
-
-# 6. Mostrar mensaje de resultado
-LOADI 10   # ASCII para nueva línea
+LOADI 'I'
+OUT
+LOADI 'D'
+OUT
+LOADI 'O'
+OUT
+LOADI 'S'
+OUT
+LOADI '!'
+OUT
+LOADI 10
+OUT
+LOADI 'C'
+OUT
+LOADI 'A'
+OUT
+LOADI 'L'
+OUT
+LOADI 'C'
+OUT
+LOADI 'U'
+OUT
+LOADI 'L'
+OUT
+LOADI 'A'
+OUT
+LOADI 'D'
+OUT
+LOADI 'O'
 OUT
 LOADI 'R'
 OUT
+LOADI 'A'
+OUT
+LOADI ' '
+OUT
+LOADI 'S'
+OUT
+LOADI 'I'
+OUT
+LOADI 'M'
+OUT
+LOADI 'P'
+OUT
+LOADI 'L'
+OUT
+LOADI 'E'
+OUT
+LOADI 10
+OUT
+LOADI 10
+OUT
+
+# --- Lógica del Programa ---
+# 1. Pedir el primer número
+LOADI 'I'
+OUT
+LOADI 'n'
+OUT
+LOADI 'g'
+OUT
+LOADI 'r'
+OUT
+LOADI 'e'
+OUT
+LOADI 's'
+OUT
+LOADI 'e'
+OUT
+LOADI ' '
+OUT
+LOADI 'e'
+OUT
+LOADI 'l'
+OUT
+LOADI ' '
+OUT
+LOADI 'p'
+OUT
+LOADI 'r'
+OUT
+LOADI 'i'
+OUT
+LOADI 'm'
+OUT
+LOADI 'e'
+OUT
+LOADI 'r'
+OUT
+LOADI ' '
+OUT
+LOADI 'n'
+OUT
+LOADI 'u'
+OUT
+LOADI 'm'
+OUT
+LOADI 'e'
+OUT
+LOADI 'r'
+OUT
+LOADI 'o'
+OUT
 LOADI ':'
 OUT
 LOADI ' '
 OUT
 
-# 7. Convertir el resultado a ASCII para imprimir
-#    (Funciona para resultados de un solo dígito 0-9)
-ADD 251    # AC = suma + 48 (convierte el número a su char ASCII)
+# 2. Leer el primer número
+IN
+STORE 250
 
-# 8. Imprimir el resultado
+# 3. Pedir el segundo número
+LOADI 10
 OUT
+LOADI 'I'
+OUT
+LOADI 'n'
+OUT
+LOADI 'g'
+OUT
+LOADI 'r'
+OUT
+LOADI 'e'
+OUT
+LOADI 's'
+OUT
+LOADI 'e'
+OUT
+LOADI ' '
+OUT
+LOADI 'e'
+OUT
+LOADI 'l'
+OUT
+LOADI ' '
+OUT
+LOADI 's'
+OUT
+LOADI 'e'
+OUT
+LOADI 'g'
+OUT
+LOADI 'u'
+OUT
+LOADI 'n'
+OUT
+LOADI 'd'
+OUT
+LOADI 'o'
+OUT
+LOADI ' '
+OUT
+LOADI 'n'
+OUT
+LOADI 'u'
+OUT
+LOADI 'm'
+OUT
+LOADI 'e'
+OUT
+LOADI 'r'
+OUT
+LOADI 'o'
+OUT
+LOADI ':'
+OUT
+LOADI ' '
+OUT
+
+# 4. Leer el segundo número
+IN
+
+# 5. Sumar y guardar el resultado
+ADD 250
+STORE 252
+
+# 6. Mostrar mensaje de resultado
+LOADI 10
+OUT
+LOADI 'E'
+OUT
+LOADI 'l'
+OUT
+LOADI ' '
+OUT
+LOADI 'r'
+OUT
+LOADI 'e'
+OUT
+LOADI 's'
+OUT
+LOADI 'u'
+OUT
+LOADI 'l'
+OUT
+LOADI 't'
+OUT
+LOADI 'a'
+OUT
+LOADI 'd'
+OUT
+LOADI 'o'
+OUT
+LOADI ' '
+OUT
+LOADI 'e's'
+OUT
+LOADI ':'
+OUT
+LOADI ' '
+OUT
+
+# 7. Recuperar la suma
+LOAD 252
+
+# 8. Imprimir el resultado numérico
+OUTNUM
 
 # 9. Fin del programa
 HALT

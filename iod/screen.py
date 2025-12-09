@@ -16,6 +16,12 @@ class Screen:
         Args:
             char_code (int): El código ASCII del caracter a escribir.
         """
+        # Manejar la tecla de retroceso
+        if char_code == 8:
+            if len(self._buffer) > 0:
+                self._buffer = self._buffer[:-1]
+            return
+
         # Convierte el código ASCII a un caracter y lo añade al buffer
         self._buffer += chr(char_code)
 
@@ -32,6 +38,10 @@ class Screen:
             str: El contenido de la pantalla.
         """
         return self._buffer
+
+    def write_value(self, value: int):
+        """Añade la representación de un número al buffer."""
+        self._buffer += str(value)
 
     def reset(self):
         """Limpia el buffer de la pantalla."""

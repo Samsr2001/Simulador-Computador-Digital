@@ -24,7 +24,7 @@ class Button:
 class ControlPanel:
     """Panel con los botones de control de la simulación."""
 
-    def __init__(self, x, y, width, height, cpu, program_loader):
+    def __init__(self, x, y, width, height, cpu, program_loader, calculator_program=None):
         """
         Inicializa el panel de control.
         Args:
@@ -34,10 +34,12 @@ class ControlPanel:
             height (int): Alto.
             cpu (CPU): La instancia de la CPU.
             program_loader (ProgramLoader): El cargador de programas.
+            calculator_program (list, optional): El programa de calculadora pre-cargado.
         """
         self.rect = pygame.Rect(x, y, width, height)
         self.cpu = cpu
         self.program_loader = program_loader
+        self.calculator_program = calculator_program
         self.title_font = pygame.font.Font(None, 28)
         self.title_font.set_bold(True)
         
@@ -93,7 +95,11 @@ class ControlPanel:
                 self.cpu.step()
             elif self.btn_reset.is_clicked(event.pos):
                 self.cpu.reset()
-                self.program_loader.load_into_memory()
+                # Carga el programa incorporado si existe, si no, usa el método anterior
+                if self.calculator_program:
+                    self.program_loader.load_from_list(self.calculator_program)
+                else:
+                    self.program_loader.load_into_memory()
 
 
     def update(self):

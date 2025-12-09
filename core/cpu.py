@@ -1,5 +1,5 @@
 from core.alu import ALU
-from core.control_unit import ControlUnit
+# from core.control_unit import ControlUnit <- Moved to __init__
 from core.memory import Memory
 from iod.io_manager import IOManager
 
@@ -13,6 +13,8 @@ class CPU:
             memory (Memory): El sistema de memoria.
             io_manager (IOManager): El gestor de entrada/salida.
         """
+        from core.control_unit import ControlUnit  # Importación local para evitar ciclo
+        
         self.memory = memory
         self.io_manager = io_manager
 
@@ -30,6 +32,7 @@ class CPU:
         self.halted = False
         self.running = False
         self.waiting_for_input = False
+        self.input_buffer = ""
 
     def step(self):
         """Ejecuta un único ciclo de instrucción o maneja el estado de espera."""
@@ -40,11 +43,27 @@ class CPU:
         if self.waiting_for_input:
             key = self.io_manager.pop_key()
             if key is not None:
-                self.ac = key
-                self.io_manager.write_char(key)  # <-- ECHO a la pantalla
-                self.waiting_for_input = False
-                self.pc += 1  # La instrucción IN ha terminado, avanzamos al siguiente
-            return # Si no hay tecla, no hacemos nada más en este ciclo
+                # Tecla Enter: finalizar la entrada
+                if key == 10:
+                    try:
+                        self.ac = int(self.input_buffer)
+                    except (ValueError, TypeError):
+                        self.ac = 0
+                    self.input_buffer = ""
+                    self.waiting_for_input = False
+                    self.io_manager.write_char(10)  # Eco de nueva línea
+                    self.pc += 1
+                # Tecla Retroceso: borrar último dígito
+                elif key == 8:
+                    if len(self.input_buffer) > 0:
+                        self.input_buffer = self.input_buffer[:-1]
+                        self.io_manager.write_char(8) # Eco de retroceso
+                # Tecla de dígito: añadir al buffer
+                elif chr(key).isdigit():
+                    self.input_buffer += chr(key)
+                    self.io_manager.write_char(key)
+
+            return  # Permanecer en estado de espera
 
         # --- Ciclo normal Fetch-Decode-Execute ---
         
@@ -53,19 +72,10 @@ class CPU:
 
         # 2. Decode
         instruction = self.control_unit.decode(self.ir)
-        pc_before_execute = self.pc
-
-        # 3. Execute
-        # La ejecución de 'IN' ahora activará 'waiting_for_input'
-        self.control_unit.execute(self)
         
-        # 4. Avanzar PC (si no es un salto o una instrucción de espera)
-        # Si la ejecución resultó en una espera, no avanzamos el PC.
-        # El PC se avanzará cuando se reciba la tecla.
-        if not self.waiting_for_input:
-            # Si el PC no fue modificado por un JUMP, lo incrementamos.
-            if self.pc == pc_before_execute:
-                self.pc += 1
+        # 3. Execute
+        # La Unidad de Control es ahora responsable de modificar el PC
+        self.control_unit.execute(self)
 
     def run_cycle(self):
         """Wrapper para ejecutar un ciclo si la CPU está en modo 'running'."""
@@ -89,5 +99,6 @@ class CPU:
         self.halted = False
         self.running = False
         self.waiting_for_input = False
+        self.input_buffer = ""
         self.memory.reset()
         self.io_manager.reset()
